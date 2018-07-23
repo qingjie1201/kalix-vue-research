@@ -1,8 +1,8 @@
 {
   "name": "kalix-vue-research",
-  "description": "A Vue component to kalix-admin",
+  "description": "A Vue component to kalix-research",
   "version": "0.0.1",
-  "author": "juezhan <11991762@qq.com>",
+  "author": "hqj <150091225@qq.com>",
   "private": false,
   "license": "MIT",
   "main": "dist/index.js",

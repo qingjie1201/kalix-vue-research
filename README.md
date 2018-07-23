@@ -1,1 +1,1 @@
-# kalix-vue-admin
+# kalix-vue-research
