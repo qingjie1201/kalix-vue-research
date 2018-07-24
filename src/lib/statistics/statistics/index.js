@@ -1,7 +1,7 @@
-import ResearchDict from './statistics.vue'
+import Statistics from './statistics.vue'
 
 const components = [
-    ResearchDict
+    Statistics
 ]
 
 const main = {

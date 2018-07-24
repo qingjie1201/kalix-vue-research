@@ -5,47 +5,52 @@
 -->
 <template lang="pug">
     keep-alive
-        base-table(bizKey="award" title='获奖信息列表'
+        kalix-table(bizKey="award" title='获奖信息列表'
         v-bind:tableFields="tableFields"
-        v-bind:customRender="customRender"
         v-bind:targetURL="targetURL"
         v-bind:buttonPermissionPrefix="buttonPermissionPrefix"
         v-bind:bizDialog="bizDialog"
         v-bind:bizSearch="'ResearchAwardSearch'"
-        v-bind:btnList="btnList")
+        v-bind:btnList="btnList"
+        v-bind:dictDefine="dictDefine"
+        v-bind:isFixedColumn="isFixedColumn")
 </template>
 
 <script type="text/ecmascript-6">
-    import {awardBtnPermissionPrefix, AwardComponent, AwardURL, ToolButtonList} from '../../config.toml'
-    import {registerComponent} from '@/api/register'
-    import Cache from 'common/cache'
-
-    // 注册全局组件
-    registerComponent(AwardComponent)
+    import {awardBtnPermissionPrefix, AwardURL, ResearchCacheKey, ToolButtonList} from '../../config.toml'
+    /*import Cache from 'common/cache'*/
 
     export default {
         name: 'kalix-research-award',
         data() {
             return {
+                dictDefine: [{ // 定义数据字典的显示
+                    cacheKey: ResearchCacheKey,
+                    type: '展赛类别',
+                    targetField: 'competitionTypeName',
+                    sourceField: 'competitionType'
+                }],
                 btnList: ToolButtonList,
                 targetURL: AwardURL,
                 buttonPermissionPrefix: awardBtnPermissionPrefix,
                 tableFields: [
-                    {prop: 'competitionName', label: '展赛类别'},
-                    {prop: 'awardName', label: '获奖人'},
-                    {prop: 'awardLevel', label: '获奖级别'}
+                    {prop: 'competitionName', label: '展赛名称', width: '350px'},
+                    {prop: 'competitionTypeName', label: '展赛类别', width: '350px'},
+                    {prop: 'awardName', label: '获奖人', width: '350px'},
+                    {prop: 'awardLevel', label: '获奖级别', width: '350px'}
                 ],
                 bizDialog: [
                     {id: 'view', dialog: 'ResearchAwardView'},
                     {id: 'edit', dialog: 'ResearchAwardAdd'},
                     {id: 'add', dialog: 'ResearchAwardAdd'}
-                ]
+                ],
+                isFixedColumn: true
             }
         },
         created() {
         },
         methods: {
-            customRender(_data) {
+            /*customRender(_data) {
                 _data.forEach(function (e) {
                     let data = JSON.parse(Cache.get('RESEARCH-DICT-KEY'))
                     let item = data.filter(item => {
@@ -55,15 +60,13 @@
                         e.competitionName = item[0].label
                     }
                 })
-            }
+            }*/
         },
-        components: {
-        },
+        components: {},
         mounted() {
         }
     }
 </script>
 
 <style scoped lang="stylus">
-
 </style>

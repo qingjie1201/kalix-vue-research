@@ -9,7 +9,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import BaseSearch from '@/components/custom/baseSearch.vue'
 
     export default {
         name: 'ResearchSignupSearch',
@@ -20,9 +19,7 @@
                 ]
             }
         },
-        components: {
-            KalixSearch: BaseSearch
-        }
+        components: {}
     }
 </script>
 

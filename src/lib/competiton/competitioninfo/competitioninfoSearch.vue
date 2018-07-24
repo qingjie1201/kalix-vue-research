@@ -5,26 +5,23 @@
 -->
 
 <template lang="pug">
-  kalix-search(title="展赛查询" v-bind:searchFields="searchFields")
+    kalix-search(title="展赛查询" v-bind:searchFields="searchFields")
 </template>
 
 <script type="text/ecmascript-6">
-    import BaseSearch from '@/components/custom/baseSearch.vue'
 
     export default {
         name: 'ResearchCompetitionInfoSearch',
-    data() {
-      return {
-        searchFields: [
-          {label: '展赛名称', prop: 'name'},
-          {label: '展赛类别', prop: 'type', type: 'dict', appName: 'research', dictType: '展赛类别'}
-        ]
-      }
-    },
-    components: {
-      KalixSearch: BaseSearch
+        data() {
+            return {
+                searchFields: [
+                    {label: '展赛名称', prop: 'name'},
+                    {label: '展赛类别', prop: 'type', type: 'dict', appName: 'research', dictType: '展赛类别'}
+                ]
+            }
+        },
+        components: {}
     }
-  }
 </script>
 
 <style scoped lang="stylus" type="text/stylus">

@@ -5,30 +5,23 @@
 -->
 
 <template lang="pug">
-    kalix-search(title="获奖信息查询"
-    v-bind:searchFields="searchFields" v-bind:form-rules="rules")
+    kalix-search(title="获奖信息查询" v-bind:searchFields="searchFields")
 </template>
 
 <script type="text/ecmascript-6">
-    import BaseSearch from '@/components/custom/baseSearch.vue'
 
     export default {
         name: 'ResearchAwardSearch',
         data() {
             return {
                 searchFields: [
-                    {label: '获奖人', prop: 'awardname'}
-                ],
-                rules: {
-                    awardname: [{required: true, message: '请输入获奖人姓名', trigger: 'blur'}]
-                }
+                    {label: '获奖人', prop: 'awardName'}
+                ]
             }
         },
         created() {
         },
-        components: {
-            KalixSearch: BaseSearch
-        },
+        components: {},
         methods: {}
     }
 </script>

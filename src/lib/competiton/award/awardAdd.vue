@@ -10,30 +10,20 @@
     v-bind:targetURL="targetURL")
         div.el-form(slot="dialogFormSlot")
             div.s-flex
-                el-form-item.s-flex_item(label="展赛" prop="competitionId"
-                v-bind:rules="rules.competitionId" label-width="140px" )
-                    kalix-competition-select(style="width:100%" v-model="competitionInfo" v-bind:multiple="false"
-                    v-bind:objectsUrl="objectsUrl" v-bind:objectIds.sync="formModel.competitionId" v-on:objectSelected="onCompetitionSelected")
-                el-form-item.s-flex_item(label="展赛类别" prop="competitionType" label-width="140px")
-                    el-input(v-bind:value="formModel.competitionType|getDictName('research','展赛类别')" readonly)
+                el-form-item.s-flex_item(label="展赛信息" prop="competitionId" v-bind:rules="rules.competitionId" v-bind:label-width="labelWidth")
+                    kalix-object-select2(v-model="formModel.competitionId" v-bind:objectsUrl="competitionInfoURL" v-on:objectSelected="competitionSelected")
+                el-form-item.s-flex_item(label="获奖人" prop="signupId" v-bind:rules="rules.signupId" v-bind:label-width="labelWidth")
+                    kalix-object-select2(v-model="formModel.signupId" v-bind:objectsUrl="signupUrl" v-bind:jsonStr="selectParams" v-on:objectSelected="signupSelected")
             div.s-flex
-                el-form-item.s-flex_item(label="获奖人" prop="signupId" label-width="140px")
-                    kalix-competition-select(style="width:100%" v-model="signup" v-bind:multiple="false"
-                    v-bind:params="selectParams"
-                    v-bind:objectsUrl="signupUrl" v-bind:objectIds.sync="formModel.signupId" v-bind:objectNames.sync="formModel.awardName")
-
-                el-form-item.s-flex_item(label="获奖级别" prop="awardLevel" label-width="140px")
+                el-form-item.s-flex_item(label="获奖级别" prop="awardLevel" v-bind:label-width="labelWidth")
                     el-input(v-model="formModel.awardLevel")
-            div.s-flex
-                el-form-item.s-flex_item(label="备注" prop="remark" label-width="140px")
+                el-form-item.s-flex_item(label="备注" prop="remark" v-bind:label-width="labelWidth")
                     el-input(v-model="formModel.remark")
 </template>
 
 <script type="text/ecmascript-6">
     import FormModel from './model'
     import {AwardURL, CompetitionInfoURL, SignupURL} from '../../config.toml'
-    import BaseDictSelect from '@/components/custom/baseDictSelect'
-    import CompetitionSelect from '@/components/custom/baseObjectSelect'
 
     export default {
         name: 'ResearchAwardAdd',
@@ -43,31 +33,50 @@
                 signup: null,
                 formModel: Object.assign({}, FormModel),
                 rules: {
-                    competitionId: [{type: 'number', required: true, message: '请选择参加展赛名称', trigger: 'change'}]
+                    competitionId: [{type: 'number', required: true, message: '请选择参加展赛名称', trigger: 'change'}],
+                    signupId: [{type: 'number', required: true, message: '请选择获奖人', trigger: 'change'}]
                 },
                 targetURL: AwardURL,
-                objectsUrl: CompetitionInfoURL,
-                signupUrl: SignupURL,
-                selectParams: {}
+                competitionInfoURL: CompetitionInfoURL,
+                signupUrl: '',
+                selectParams: {},
+                labelWidth: '140px'
             }
         },
-        created() {
-            console.log('created FormModel', FormModel)
-            console.log('created this.formModel', this.formModel)
+        mounted() {
+            setTimeout(() => {
+                if (this.formModel.competitionId) {
+                    this.signupUrl = SignupURL
+                    this.selectParams = {competitionId: this.formModel.competitionId}
+                }
+            }, 20)
         },
-        components: {
-            KalixCompetitionSelect: CompetitionSelect
-        },
+        components: {},
         methods: {
-            onCompetitionSelected(competition) {
-                console.log('++++++++----------:', competition.type)
-                this.formModel.competitionType = competition.type
-                console.log('formModel.competitionId', this.formModel.competitionId)
-                this.selectParams = {competitionId: this.formModel.competitionId}
+            competitionSelected(competition) {
+                this.clearSignup()
+                if (competition && !this.$M_IsEmptyObject(competition)) {
+                    this.signupUrl = SignupURL
+                    this.selectParams = {competitionId: competition.id}
+                } else {
+                    this.signupUrl = ''
+                }
+            },
+            signupSelected(signup) {
+                if (signup && !this.$M_IsEmptyObject(signup)) {
+                    this.formModel.awardName = signup.name
+                } else {
+                    this.formModel.awardName = ''
+                }
+            },
+            clearSignup() {
+                this.formModel.signupId = ''
+                this.formModel.awardName = ''
             }
         }
     }
 </script>
+
 <style scoped lang="stylus">
     @import "~@/assets/stylus/color.styl"
     .dd
